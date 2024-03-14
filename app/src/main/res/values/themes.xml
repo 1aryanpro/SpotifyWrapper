@@ -1,16 +1,47 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
-    <style name="Theme.SpotifyWrapper" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+
+    <!-- Light Mode Theme -->
+    <style name="light_mode" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/purple_500</item>
-        <item name="colorPrimaryVariant">@color/purple_700</item>
-        <item name="colorOnPrimary">@color/white</item>
+        <item name="backgroundColor">@color/lm_dark_blue</item>
+        <item name="android:backgroundTint"> @color/lm_dark_blue</item>
+
+        <item name="colorPrimaryVariant">@color/lm_light_blue</item>
+        <item name="colorOnPrimary">@color/lm_light_gray</item>
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/teal_200</item>
-        <item name="colorSecondaryVariant">@color/teal_700</item>
-        <item name="colorOnSecondary">@color/black</item>
+        <item name="colorSecondary">@color/lm_dark_green</item>
+        <item name="colorSecondaryVariant">@color/lm_medium_green</item>
+        <item name="colorOnSecondary">@color/white</item>
         <!-- Status bar color. -->
-        <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
+        <item name="android:statusBarColor">@color/lm_light_green</item>
         <!-- Customize your theme here. -->
+
+        <item name="android:font">@font/madimi_one_regular</item>
+        <item name="android:fontFamily">@font/madimi_one_regular</item>
+
+        <item name="android:textColorPrimary">@color/black</item>
     </style>
+
+    <!-- Dark Mode Theme -->
+    <style name="dark_mode" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+        <!-- Primary brand color. -->
+        <item name="backgroundColor">@color/dm_dark_blue</item>
+        <item name="android:backgroundTint"> @color/dm_dark_blue</item>
+
+        <item name="colorPrimaryVariant">@color/dm_light_blue</item>
+        <item name="colorOnPrimary">@color/dm_light_gray</item>
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/dm_dark_green</item>
+        <item name="colorSecondaryVariant">@color/dm_medium_green</item>
+        <item name="colorOnSecondary">@color/white</item>
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor">@color/dm_light_green</item>
+        <!-- Customize your theme here. -->
+
+        <item name="android:font">@font/madimi_one_regular</item>
+        <item name="android:fontFamily">@font/madimi_one_regular</item>
+
+        <item name="android:textColorPrimary">@color/black</item>
+    </style>
+
 </resources>
