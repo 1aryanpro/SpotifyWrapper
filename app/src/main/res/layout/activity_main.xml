@@ -5,6 +5,4 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <!-- Add your UI elements here or leave it empty for an empty layout -->
-
 </RelativeLayout>
