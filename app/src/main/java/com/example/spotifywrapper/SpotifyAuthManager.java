@@ -26,34 +26,40 @@ import okhttp3.Response;
 public class SpotifyAuthManager {
     private static final String CLIENT_ID = BuildConfig.SPOTIFY_CLIENT_ID;
     private static final String REDIRECT_URI = Uri.parse("spotifywrapper://auth").toString();
-    private static String userToken = null;
     public static final String USER_TOKEN_KEY = "spotify-client-token";
+    private String userToken = null;
+    private final SharedPreferences pref;
+    private final SharedPreferences.Editor editor;
 
-    private SpotifyAuthManager() {
-        throw new AssertionError("This class should not be instantiated.");
+    SpotifyAuthManager(Context context) {
+        pref = context.getSharedPreferences(USER_TOKEN_KEY, Context.MODE_PRIVATE);
+        editor = pref.edit();
     }
 
-    public static String getUserToken(Activity contextActivity) {
+    public String getUserToken() {
         if (userToken != null) return userToken;
-        return getStoredUserToken(contextActivity);
+        return getStoredUserToken();
     }
 
-    public static String getStoredUserToken(Activity contextActivity) {
-        SharedPreferences sp = contextActivity.getPreferences(Context.MODE_PRIVATE);
-        userToken = sp.getString(USER_TOKEN_KEY, null);
+    public String getStoredUserToken() {
+        userToken = pref.getString(USER_TOKEN_KEY, null);
+        Log.d("getStoredUserToken", userToken == null ? "NULL" : userToken);
         return userToken;
     }
 
-    public static void setUserToken(Activity contextActivity, String t) {
+    public void setUserToken(String t) {
         userToken = t;
-
-        SharedPreferences sharedPreferences = contextActivity.getPreferences(Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString(SpotifyAuthManager.USER_TOKEN_KEY, userToken);
+        editor.putString(USER_TOKEN_KEY, userToken);
         editor.apply();
     }
 
-    public static void requestUserToken(Activity contextActivity) {
+    public void clearUserToken() {
+        userToken = null;
+        editor.remove(USER_TOKEN_KEY);
+        editor.apply();
+    }
+
+    public void requestUserToken(Activity contextActivity) {
         final AuthorizationRequest request =
                 new AuthorizationRequest.Builder(CLIENT_ID, AuthorizationResponse.Type.TOKEN, REDIRECT_URI)
                 .setShowDialog(false)
@@ -63,7 +69,7 @@ public class SpotifyAuthManager {
         AuthorizationClient.openLoginActivity(contextActivity, 0, request);
     }
 
-    public static void callAPI(String endpoint, Consumer<JSONObject> onSuccess) {
+    public void callAPI(String endpoint, Consumer<JSONObject> onSuccess) {
         if (userToken == null) {
             return;
         }
