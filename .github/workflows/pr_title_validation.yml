@@ -1,0 +1,21 @@
+name: Pull Request Title Validation
+
+on:
+  pull_request:
+    types: [opened, edited, reopened]
+
+jobs:
+  check_pr_name:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check Pull Request Name Format
+        run: |
+          if ! [[ "${PR_TITLE}" =~ ^(feature|bugfix|refactor|style):\s.+$ ]]; then
+            echo "Pull Request title does not match the required format."
+            echo "Please follow the format: [prefix]: Name of Change"
+            echo "Allowed prefixes: feature, bugfix, refactor, style"
+            exit 1
+          fi
+        env:
+          PR_TITLE: ${{ github.event.pull_request.title }}
