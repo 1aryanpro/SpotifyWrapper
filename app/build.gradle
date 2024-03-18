@@ -17,11 +17,15 @@ android {
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
-        buildConfigField("String", "SPOTIFY_CLIENT_ID", "\"${System.getenv("SPOTIFY_API_KEY")}\"")
+        def Properties properties = new Properties()
+        properties.load(project.rootProject.file("apikeys.properties").newDataInputStream())
+
+        buildConfigField("String", "SPOTIFY_CLIENT_ID", properties.getProperty("SPOTIFY_CLIENT_ID"))
     }
 
     buildFeatures {
         buildConfig true
+        viewBinding true
     }
 
     buildTypes {
