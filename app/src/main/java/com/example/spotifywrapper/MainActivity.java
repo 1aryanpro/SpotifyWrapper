@@ -24,9 +24,6 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         Intent intent = new Intent(this, LoginDebugActivity.class);
         int id = item.getItemId();
-        if (id == R.id.launch_firebaseDebug) {
-            intent = new Intent(this, FirebaseDebugActivity.class);
-        }
         startActivity(intent);
         finish();
         return true;
