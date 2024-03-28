@@ -56,7 +56,6 @@ public class LoginActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.menu_toolbar, menu);
         return true;
     }
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         Intent intent = new Intent(this, LoginDebugActivity.class);
