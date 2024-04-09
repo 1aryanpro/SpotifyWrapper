@@ -37,9 +37,12 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        Intent intent = new Intent(this, LoginDebugActivity.class);
+        Class act = LoginDebugActivity.class;
         int id = item.getItemId();
-        startActivity(intent);
+        if (id == R.id.launch_firebaseDebug) {
+            act = FirebaseDebugActivity.class;
+        }
+        startActivity(new Intent(this, act));
         finish();
         return true;
     }
