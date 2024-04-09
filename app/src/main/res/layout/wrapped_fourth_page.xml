@@ -2,9 +2,10 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/artist_name"
+    android:id="@+id/wrapper4"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:backgroundTint="@null"
     android:background="@drawable/page_4_background">
 
     <TextView
@@ -30,26 +31,30 @@
 
     <ImageView
         android:id="@+id/artist_pfp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
         android:layout_marginBottom="450dp"
-        tools:src="@tools:sample/avatars"
+        android:src="@drawable/placeholder_avatar"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/top_artist_title" />
+        app:layout_constraintTop_toBottomOf="@+id/top_artist_title"
+        app:layout_constraintVertical_bias="0.0"
+        tools:src="@tools:sample/avatars" />
 
     <ImageView
         android:id="@+id/artist_song_pic"
         android:layout_width="81dp"
         android:layout_height="80dp"
-        tools:src="@tools:sample/avatars"
+        android:src="@drawable/placeholder_avatar"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.048"
+        app:layout_constraintHorizontal_bias="0.224"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/top_artist_title"
-        app:layout_constraintVertical_bias="0.361" />
+        app:layout_constraintVertical_bias="0.532"
+        tools:src="@tools:sample/avatars" />
 
     <TextView
         android:id="@+id/top_artist_name"
@@ -89,7 +94,7 @@
         app:layout_constraintTop_toBottomOf="@+id/artist_song_name" />
 
     <TextView
-        android:id="@+id/artistit_peak_month"
+        android:id="@+id/artist_peak_month"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="136dp"
