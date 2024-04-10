@@ -27,6 +27,7 @@ import com.spotify.sdk.android.auth.AuthorizationResponse;
  */
 
 import java.io.IOException;
+import java.util.Objects;
 import java.util.function.Consumer;
 
 import okhttp3.Call;
@@ -35,80 +36,58 @@ import okhttp3.Call;
 import okhttp3.Response;
 
 public class APIRequests {
-    //private static final String BASE_URL = "https://api.spotify.com";
-    //private static final String TAG = "";
 
+    public List<ArtistContainer> topArtists = new ArrayList<>(); //add ArtistContainer objects (Name, Image URL)
+    public List<TrackContainer> topTracks = new ArrayList<>(); //add TrackContainer objects (Name, Album, Artist)
     public List<String> artistsForGenre;
-
-
-    //list of Web API endpoints to get all info on artists
     public List<String> artistsEndpointForGenre;
 
     public List<String> listOfGenres = new ArrayList<>();
 
-    //private void getResponseForTopArtists() {return "";}
-
-    //Serves as the onResponse method inside the .enqueue and Callback()
-    private void parseTopArtistsResponse(Call call, Response jsonResponse) throws IOException{
-        if (jsonResponse.isSuccessful()) {
-            try {
-                assert jsonResponse.body() != null;
-                JSONObject jsonData = new JSONObject(jsonResponse.body().string());
-                JSONArray items = jsonData.getJSONArray("items");
-                for (int i = 0; i < items.length(); i++) {
-                    JSONObject artist = (JSONObject) items.get(i);
-                    String artistName = artist.getString("name"); //gets the name of this current artist
-                    String artistId = artist.getString("id"); //gets the artist id for this current artist
-                }
-            } catch (JSONException e) {
-                Log.e("HTTP", "Failed to parse JSON response", e);
-            }
-        } else {
-            Log.e("HTTP", "Failed to fetch data: " + jsonResponse.code() + " - " + jsonResponse.message());
-        }
+    private void parseTopArtistsResponse(SpotifyAuthManager sm) throws JSONException{
+        sm.callAPI("v1/me/top/artists", data -> {
+               JSONArray items = data.getJSONArray("items");
+               for (int i = 0; i < 3; i++) { //get ONLY top 3 artists
+                   JSONObject artist = items.getJSONObject(i);
+                   String artistName = artist.getString("name");
+                   JSONArray imagesArray = artist.getJSONArray("images");
+                   String artistImageURL = null;
+                   if (imagesArray.length() > 0) {
+                       JSONObject image = imagesArray.getJSONObject(0);
+                       artistImageURL = image.getString("url");
+                   } else {
+                       //error
+                   }
+                   topArtists.add(new ArtistContainer(artistName, artistImageURL)); //MIGHT HAVE TO DO A NULL CHECK WHEN USING THIS LIST
+               }
+        });
     }
 
-    //private void getResponseForTopTracks() {return;}
+    private void parseTopTracksResponse(SpotifyAuthManager sm) {
+        sm.callAPI("v1/me/top/tracks", data -> {
+            JSONArray items = data.getJSONArray("items");
+            for (int i = 0; i < 5; i++) { //to get top 5
+                JSONObject track = items.getJSONObject(i);
+                String trackName = track.getString("name"); //name of track
+                JSONObject album = track.getJSONObject("album");
+                String albumName = album.getString("name");
+                JSONArray artistList = track.getJSONArray("artists"); //array of artist(s) --> USED for GENRES method too !!!!!!
+                List<String> artistOfTrack = new ArrayList<>(); //artist(s) of track
+                for (int j = 0; j < artistList.length(); j++) {
+                    JSONObject artist = artistList.getJSONObject(j);
+                    String artistName = artist.getString("name");
+                    artistOfTrack.add(artistName); //add artist(s) of track to a list
 
-    private void parseTopTracksResponse(Call call, Response jsonResponse) throws IOException {
-        if (jsonResponse.isSuccessful()) {
-            try {
-                assert jsonResponse.body() != null;
-                JSONObject jsonData = new JSONObject(jsonResponse.body().string());
-                JSONArray items = jsonData.getJSONArray("items");
-                for (int i = 0; i < items.length(); i++) {
-                    JSONObject track = (JSONObject) items.get(i);
-                    String trackName = track.getString("name"); //gets the name of the track
-                    JSONArray artistList = track.getJSONArray("artists"); //gets the array of artist(s) for track --> USED for GENRES method
-                    JSONObject album = track.getJSONObject("album");
-                    JSONArray images = album.getJSONArray("images");
-                    for (int j = 0; j < images.length(); j++) {
-                        JSONObject image = images.getJSONObject(j);
-                        String imageURL = image.getString("url"); //gets imageURL
-                        //gets dimensions of image for XML use
-                        int height = image.getInt("height");
-                        int width = image.getInt("width");
+                    artistsForGenre.add(artistName); //add to list of existed artists for Top Tracks
+                    //will be used to identify top genres
 
-                        //perform desired actions
-                    }
-                    for (int j = 0; j < artistList.length(); j++) {
-                        JSONObject artist = artistList.getJSONObject(j);
-                        String artistName = artist.getString("name");
-                        artistsForGenre.add(artistName); //add to list of existed artists for Top Tracks
-                                                            //will be used to identify top genres
-
-                        //href --> link to the Web API endpoint providing full details of the artist
-                        String hrefArtist = artist.getString("href");
-                        artistsEndpointForGenre.add(hrefArtist); //used for future access to artists INFO within API call
-                    }
-                    String trackPopularity = track.getString("popularity"); // gets the pop of the track
+                    //href --> link to the Web API endpoint providing full details of the artist
+                    String hrefArtist = artist.getString("href");
+                    artistsEndpointForGenre.add(hrefArtist); //used for future access to artists INFO within API call
                 }
-            } catch (JSONException e){
-                Log.e("HTTP", "Failed to parse JSON response", e);
+                topTracks.add(new TrackContainer(trackName, albumName, artistOfTrack));
             }
-        } else {
-            Log.e("HTTP", "Failed to fetch data: " + jsonResponse.code() + " - " + jsonResponse.message());
-        }
+        });
     }
 
     //top 5 genres of a listener
@@ -162,6 +141,12 @@ public class APIRequests {
         }
     }
 
+
+
+
+
+    //Return an array of Strings (most popular @ head, least popular @ tail)
+
     private List<String> genreRanking(List<String> genresList) {
         //creates a mapping of <Genre, NumberOfOccurrencesOfGenre>
         Map<String, Integer> countMap = new HashMap<>();
@@ -196,3 +181,16 @@ public class APIRequests {
         return listOfGenres;
     }
 }
+
+
+/** Make the callAPI call somewhere in this
+ * private void getUserData() {
+ *         sm.callAPI("/v1/artists/0TnOYISbd1XYRBk9myaseg", data -> {
+ *             try {
+ *                 setTextAsync(data.toString(4), responseTextView);
+ *             } catch (JSONException e) {
+ *                 throw new RuntimeException(e);
+ *             }
+ *         });
+ *     }
+ */
