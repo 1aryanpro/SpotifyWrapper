@@ -39,14 +39,12 @@ public class APIRequests {
 
     public List<ArtistContainer> topArtists = new ArrayList<>(); //add ArtistContainer objects (Name, Image URL)
     public List<TrackContainer> topTracks = new ArrayList<>(); //add TrackContainer objects (Name, Album, Artist)
-    public List<String> topGenres = new ArrayList<>(); //add genres to this list FOR EACH artist
-    public List<String> artistsForGenre; //MAY NOT BE NEEDED
-    public List<String> artistsEndpointForGenre = new ArrayList<>();
+    public List<AlbumContainer> topAlbumsFromTracks = new ArrayList<>();
+    public List<GenreContainer> topOrderedGenres = new ArrayList<>();
+    public List<String> artistsEndpointForGenre = new ArrayList<>(); //used to retrieve info of artist to ID Top Genres
     public List<String> listOfGenres = new ArrayList<>();
 
-    public List<String> orderedGenres = new ArrayList<>();
-
-    private void parseTopArtistsResponse(SpotifyAuthManager sm) throws JSONException{
+    public List<ArtistContainer> topArtistsResponse(SpotifyAuthManager sm) throws JSONException {
         sm.callAPI("/v1/me/top/artists", data -> {
                JSONArray items = data.getJSONArray("items");
                for (int i = 0; i < 3; i++) { //get ONLY top 3 artists
@@ -57,15 +55,33 @@ public class APIRequests {
                    if (imagesArray.length() > 0) {
                        JSONObject image = imagesArray.getJSONObject(0);
                        artistImageURL = image.getString("url");
-                   } else {
-                       //error
                    }
                    topArtists.add(new ArtistContainer(artistName, artistImageURL)); //MIGHT HAVE TO DO A NULL CHECK WHEN USING THIS LIST
                }
         });
+        return topArtists; //WHEN IMPLEMENTING THIS METHOD, check if artistImageURL parameter for object is NULL
     }
 
-    private void parseTopTracksResponse(SpotifyAuthManager sm) {
+    public List<AlbumContainer> topAlbumsResponse(SpotifyAuthManager sm) throws JSONException {
+        sm.callAPI("/v1/me/top/tracks", data -> {
+            JSONArray items = data.getJSONArray("items");
+            for (int i = 0; i < 5; i++) {
+                JSONObject track = items.getJSONObject(i);
+                JSONObject album = track.getJSONObject("album");
+                String albumName = album.getString("name");
+                JSONArray albumImagesArray = album.getJSONArray("images");
+                String imageAlbumURL = null;
+                if (albumImagesArray.length() > 0) {
+                    JSONObject image = albumImagesArray.getJSONObject(0);
+                    imageAlbumURL = image.getString("url");
+                }
+                topAlbumsFromTracks.add(new AlbumContainer(albumName, imageAlbumURL));
+            }
+        });
+        return topAlbumsFromTracks; //WHEN IMPLEMENTING THIS METHOD, check if albumImageURL parameter for object is NULL
+    }
+
+    public List<TrackContainer> topTracksResponse(SpotifyAuthManager sm) {
         sm.callAPI("/v1/me/top/tracks", data -> {
             JSONArray items = data.getJSONArray("items");
             for (int i = 0; i < 5; i++) { //to get top 5
@@ -82,17 +98,15 @@ public class APIRequests {
 
                     String artistID = artist.getString("id"); //USED AS PART OF ENDPOINT
 
-                    artistsForGenre.add(artistName); //add to list of existed artists for Top Tracks
-                    //will be used to identify top genres
-
                     artistsEndpointForGenre.add(artistID); //used as PART of endpoint
                 }
                 topTracks.add(new TrackContainer(trackName, albumName, artistOfTrack));
             }
         });
+        return topTracks;
     }
 
-    private void parseTopGenresResponse(SpotifyAuthManager sm) {
+    public void parseTopGenresResponse(SpotifyAuthManager sm) {
         for (int i = 0; i < artistsEndpointForGenre.size(); i++) {
             sm.callAPI("/v1/artists/" + artistsEndpointForGenre.get(i), data -> {
                 JSONArray genresList = data.getJSONArray("genres");
@@ -105,7 +119,7 @@ public class APIRequests {
         genreRanking(listOfGenres);
     }
 
-    private List<String> genreRanking(List<String> genresList) {
+    private List<GenreContainer> genreRanking(List<String> genresList) {
         //creates a mapping of <Genre, NumberOfOccurrencesOfGenre>
         Map<String, Integer> countMap = new HashMap<>();
         for (String genre : genresList) {
@@ -128,7 +142,7 @@ public class APIRequests {
                 }
             }
             traversal++;
-            orderedGenres.add(toAdd);
+            topOrderedGenres.add(new GenreContainer(toAdd));
             countMap.replace(toAdd, null);
             countMap.remove(toAdd);
         }
@@ -136,6 +150,6 @@ public class APIRequests {
             countMap.replaceAll((k, v) -> null);
             countMap.clear();
         }
-        return orderedGenres;
+        return topOrderedGenres; //ordered list of Top5Genres
     }
 }
