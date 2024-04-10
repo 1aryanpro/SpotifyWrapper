@@ -39,13 +39,15 @@ public class APIRequests {
 
     public List<ArtistContainer> topArtists = new ArrayList<>(); //add ArtistContainer objects (Name, Image URL)
     public List<TrackContainer> topTracks = new ArrayList<>(); //add TrackContainer objects (Name, Album, Artist)
-    public List<String> artistsForGenre;
-    public List<String> artistsEndpointForGenre;
-
+    public List<String> topGenres = new ArrayList<>(); //add genres to this list FOR EACH artist
+    public List<String> artistsForGenre; //MAY NOT BE NEEDED
+    public List<String> artistsEndpointForGenre = new ArrayList<>();
     public List<String> listOfGenres = new ArrayList<>();
 
+    public List<String> orderedGenres = new ArrayList<>();
+
     private void parseTopArtistsResponse(SpotifyAuthManager sm) throws JSONException{
-        sm.callAPI("v1/me/top/artists", data -> {
+        sm.callAPI("/v1/me/top/artists", data -> {
                JSONArray items = data.getJSONArray("items");
                for (int i = 0; i < 3; i++) { //get ONLY top 3 artists
                    JSONObject artist = items.getJSONObject(i);
@@ -64,7 +66,7 @@ public class APIRequests {
     }
 
     private void parseTopTracksResponse(SpotifyAuthManager sm) {
-        sm.callAPI("v1/me/top/tracks", data -> {
+        sm.callAPI("/v1/me/top/tracks", data -> {
             JSONArray items = data.getJSONArray("items");
             for (int i = 0; i < 5; i++) { //to get top 5
                 JSONObject track = items.getJSONObject(i);
@@ -78,74 +80,30 @@ public class APIRequests {
                     String artistName = artist.getString("name");
                     artistOfTrack.add(artistName); //add artist(s) of track to a list
 
+                    String artistID = artist.getString("id"); //USED AS PART OF ENDPOINT
+
                     artistsForGenre.add(artistName); //add to list of existed artists for Top Tracks
                     //will be used to identify top genres
 
-                    //href --> link to the Web API endpoint providing full details of the artist
-                    String hrefArtist = artist.getString("href");
-                    artistsEndpointForGenre.add(hrefArtist); //used for future access to artists INFO within API call
+                    artistsEndpointForGenre.add(artistID); //used as PART of endpoint
                 }
                 topTracks.add(new TrackContainer(trackName, albumName, artistOfTrack));
             }
         });
     }
 
-    //top 5 genres of a listener
-
-    /**
-     * Goes through artistsEndpointForGenre list (contains all endpoints), and makes an API call
-     * --> to requestAPIForArtistInfo
-     * -----------------------------------------------------------------------------------------
-     * Could also create method for requestAPIForArtistInfo where additional parameter takes in
-     * artistsEndpointForGenre if possible?????
-     */
-
-    private void callAPIForArtistsInfo() {
-        /*
+    private void parseTopGenresResponse(SpotifyAuthManager sm) {
         for (int i = 0; i < artistsEndpointForGenre.size(); i++) {
-            //make a request to callAPI with the endpoint for each being each element of
-                //artistsEndpointForGenre list
+            sm.callAPI("/v1/artists/" + artistsEndpointForGenre.get(i), data -> {
+                JSONArray genresList = data.getJSONArray("genres");
+                for (int genreIndex = 0; genreIndex < genresList.length(); genreIndex++) {
+                    String genre = genresList.get(genreIndex);
+                    listOfGenres.add(genre);
+                }
+            });
         }
-         */
+        genreRanking(listOfGenres);
     }
-
-    /**
-     * Makes the request to the API to retrieve data
-     * @param endpoint
-     * @param onSuccess
-     */
-
-    private void requestAPIForArtistInfo(String endpoint, Consumer<JSONObject> onSuccess) {
-        //after making the call to this method to make a request...
-
-        //the retrieveTop5Genres acts as "onResponse" for this "callAPI" method--> change as needed to fit everything else
-    }
-
-    /**
-     * This method will be called for upon each request, and will construct a list of genres.
-     *
-     * When actually going through the response, it will return a list of genres the artists does
-     * --> go through each element and add individually to listOfGenres
-     * @param call
-     * @param jsonResponse
-     * @throws IOException
-     */
-    private void retrieveListOfGenres(Call call, Response jsonResponse) throws IOException{
-        if (jsonResponse.isSuccessful()) {
-            assert jsonResponse.body() != null;
-            //catch (JSONException e){
-               // Log.e("HTTP", "Failed to parse JSON response", e);
-            //}
-        } else {
-            Log.e("HTTP", "Failed to fetch data: " + jsonResponse.code() + " - " + jsonResponse.message());
-        }
-    }
-
-
-
-
-
-    //Return an array of Strings (most popular @ head, least popular @ tail)
 
     private List<String> genreRanking(List<String> genresList) {
         //creates a mapping of <Genre, NumberOfOccurrencesOfGenre>
@@ -170,7 +128,7 @@ public class APIRequests {
                 }
             }
             traversal++;
-            listOfGenres.add(toAdd);
+            orderedGenres.add(toAdd);
             countMap.replace(toAdd, null);
             countMap.remove(toAdd);
         }
@@ -178,19 +136,6 @@ public class APIRequests {
             countMap.replaceAll((k, v) -> null);
             countMap.clear();
         }
-        return listOfGenres;
+        return orderedGenres;
     }
 }
-
-
-/** Make the callAPI call somewhere in this
- * private void getUserData() {
- *         sm.callAPI("/v1/artists/0TnOYISbd1XYRBk9myaseg", data -> {
- *             try {
- *                 setTextAsync(data.toString(4), responseTextView);
- *             } catch (JSONException e) {
- *                 throw new RuntimeException(e);
- *             }
- *         });
- *     }
- */
