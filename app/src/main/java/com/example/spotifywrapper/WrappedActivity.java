@@ -3,22 +3,10 @@ package com.example.spotifywrapper;
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.google.android.material.snackbar.Snackbar;
-
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.util.Log;
 import android.view.MotionEvent;
-import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
-
-import com.example.spotifywrapper.databinding.ActivityWrappedBinding;
 
 public class WrappedActivity extends AppCompatActivity {
     int[] pages;
@@ -30,12 +18,12 @@ public class WrappedActivity extends AppCompatActivity {
 
         currPage = -1;
         pages = new int[]{
-                R.layout.wrapped_first_page,
-                R.layout.wrapped_second_page,
-                R.layout.wrapped_third_page,
-                R.layout.wrapped_fourth_page,
-                R.layout.wrapped_fifth_page,
-                R.layout.wrapped_sixth_page
+                R.layout.wrapped_title,
+                R.layout.wrapped_top_song,
+                R.layout.wrapped_top_5_songs,
+                R.layout.wrapped_top_artist,
+                R.layout.wrapped_top_3_artists,
+                R.layout.wrapped_top_genre
         };
 
         nextPage();
@@ -61,7 +49,7 @@ public class WrappedActivity extends AppCompatActivity {
         switch (currPage) {
             case 0:
                 TextView title = findViewById(R.id.textView2);
-                title.setText("2024 Spotify Wrapped");
+                title.setText("Spotify Wrapped");
                 break;
             case 1:
                 TextView name = findViewById(R.id.song_name);
