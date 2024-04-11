@@ -2,8 +2,10 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/wrapper1"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:backgroundTint="@null"
     android:background="@drawable/page_2_background">
 
     <TextView
@@ -15,7 +17,6 @@
         android:layout_marginEnd="39dp"
         android:layout_marginBottom="343dp"
         android:fontFamily="sans-serif"
-        android:text="TextView"
         android:textAlignment="center"
         android:textColor="#2EFF00"
         android:textSize="34sp"
