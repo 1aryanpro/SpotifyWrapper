@@ -27,18 +27,21 @@ public class SpotifyAuthManager {
     private static final String CLIENT_ID = BuildConfig.SPOTIFY_CLIENT_ID;
     private static final String REDIRECT_URI = Uri.parse("spotifywrapper://auth").toString();
     public static final String USER_TOKEN_KEY = "spotify-client-token";
+    private final Activity activity;
     private String userToken = null;
     private final SharedPreferences pref;
     private final SharedPreferences.Editor editor;
 
-    SpotifyAuthManager(Context context) {
+    SpotifyAuthManager(Context context, Activity conActivity) {
+        activity = conActivity;
         pref = context.getSharedPreferences(USER_TOKEN_KEY, Context.MODE_PRIVATE);
         editor = pref.edit();
+
+        getStoredUserToken();
     }
 
     public String getUserToken() {
-        if (userToken != null) return userToken;
-        return getStoredUserToken();
+        return userToken;
     }
 
     public String getStoredUserToken() {
@@ -59,20 +62,21 @@ public class SpotifyAuthManager {
         editor.apply();
     }
 
-    public void requestUserToken(Activity contextActivity) {
+    public void requestUserToken() {
         final AuthorizationRequest request =
                 new AuthorizationRequest.Builder(CLIENT_ID, AuthorizationResponse.Type.TOKEN, REDIRECT_URI)
                 .setShowDialog(false)
-                .setScopes(new String[] { "user-read-email" }) // <--- Change the scope of your requested token here
-                .setCampaign("your-campaign-token")
+                .setScopes(new String[] { "user-read-email", "user-top-read" })
                 .build();
-        AuthorizationClient.openLoginActivity(contextActivity, 0, request);
+        AuthorizationClient.openLoginActivity(activity, 0, request);
     }
 
     public void callAPI(String endpoint, Consumer<JSONObject> onSuccess) {
         if (userToken == null) {
             return;
         }
+
+        Log.d("CallAPI Called", "endpoint: " + endpoint);
 
         final Request request = new Request.Builder()
                 .url("https://api.spotify.com" + endpoint)
@@ -85,6 +89,8 @@ public class SpotifyAuthManager {
             @Override
             public void onFailure(@NonNull Call call, @NonNull IOException e) {
                 Log.e("getUserData", "Failed to make the request", e);
+                userToken = null;
+                requestUserToken();
             }
 
             @Override

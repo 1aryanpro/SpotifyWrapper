@@ -23,14 +23,14 @@ public class LoginActivity extends AppCompatActivity {
         Button loginButton = findViewById(R.id.login_btn);
         loginButton.setOnClickListener((v) -> logIn());
 
-        sm = new SpotifyAuthManager(getApplicationContext());
+        sm = new SpotifyAuthManager(getApplicationContext(), this);
 
         userToken = sm.getUserToken();
         if (userToken != null) finishLogIn();
     }
 
     private void logIn() {
-        sm.requestUserToken(this);
+        sm.requestUserToken();
     }
 
     @Override

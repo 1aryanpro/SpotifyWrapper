@@ -13,4 +13,8 @@ public class FirebaseManager {
         DatabaseReference ref = db.getReference("testingString");
         ref.setValue(testStr);
     }
+
+    public void setRef(String ref, Object val) {
+        db.getReference(ref).setValue(val);
+    }
 }
