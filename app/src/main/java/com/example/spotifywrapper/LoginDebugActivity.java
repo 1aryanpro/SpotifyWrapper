@@ -20,6 +20,8 @@ public class LoginDebugActivity extends AppCompatActivity {
     private TextView responseTextView;
     private SpotifyAuthManager sm;
 
+    private String userEmail = "";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,14 +38,14 @@ public class LoginDebugActivity extends AppCompatActivity {
         logoutButton.setOnClickListener((v) -> logoutToken());
         profileButton.setOnClickListener((v) -> getUserData());
 
-        sm = new SpotifyAuthManager(getApplicationContext());
-        sm.getUserToken();
+        sm = new SpotifyAuthManager(getApplicationContext(), this);
         setTextAsync(sm.getUserToken(), tokenTextView);
     }
 
     private void getToken() {
+        Log.d("UserEmail", userEmail);
         if (sm.getUserToken() != null) return;
-        sm.requestUserToken(this);
+        sm.requestUserToken();
     }
 
     private void logoutToken() {
@@ -52,9 +54,11 @@ public class LoginDebugActivity extends AppCompatActivity {
     }
 
     private void getUserData() {
-        sm.callAPI("/v1/artists/0TnOYISbd1XYRBk9myaseg", data -> {
+        sm.callAPI("/v1/me/", data -> {
             try {
-                setTextAsync(data.toString(4), responseTextView);
+                userEmail = data.getString("email");
+                setTextAsync(data.getString("email"), responseTextView);
+//                setTextAsync(data.toString(2), responseTextView);
             } catch (JSONException e) {
                 throw new RuntimeException(e);
             }

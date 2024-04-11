@@ -1,13 +1,12 @@
 package com.example.spotifywrapper;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
 
 public class MainActivity extends AppCompatActivity {
     int[] pages;
@@ -21,11 +20,12 @@ public class MainActivity extends AppCompatActivity {
         Button launchButton = findViewById(R.id.launch_wrapped);
         launchButton.setOnClickListener((v) -> launchWrapped());
 
-        pages = new int[]{R.id.wrapper1, R.id.wrapper2, R.id.wrapper3, R.id.wrapper4, R.id.wrapper5, R.id.wrapper6, R.id.wrapper7};
+        pages = new int[]{R.id.wrapper1, R.id.wrapper2, R.id.wrapper3, R.id.wrapper4, R.id.wrapper5, R.id.wrapper6};
     }
 
     private void launchWrapped() {
         Intent wrapped = new Intent(this, WrappedActivity.class);
+        wrapped.putExtra("id", 0);
         startActivity(wrapped);
     }
 
