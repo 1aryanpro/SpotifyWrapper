@@ -1,5 +1,6 @@
 package com.example.spotifywrapper;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -58,9 +59,12 @@ public class LoginActivity extends AppCompatActivity {
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        Intent intent = new Intent(this, LoginDebugActivity.class);
+        Class act = LoginDebugActivity.class;
         int id = item.getItemId();
-        startActivity(intent);
+        if (id == R.id.launch_firebaseDebug) {
+            act = FirebaseDebugActivity.class;
+        }
+        startActivity(new Intent(this, act));
         finish();
         return true;
     }
