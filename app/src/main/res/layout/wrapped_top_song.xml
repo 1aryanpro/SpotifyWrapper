@@ -30,16 +30,15 @@
         app:layout_constraintVertical_bias="0.318" />
 
     <ImageView
-        android:id="@+id/top_artist_pfp"
-        android:layout_width="130dp"
-        android:layout_height="130dp"
-        android:layout_marginBottom="450dp"
+        android:id="@+id/top_track_pfp"
+        android:layout_width="230dp"
+        android:layout_height="230dp"
         android:src="@drawable/placeholder_avatar"
-        tools:src="@tools:sample/avatars"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/top_artist_title" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:src="@tools:sample/avatars" />
 
     <TextView
         android:id="@+id/song_name"
@@ -51,31 +50,12 @@
         android:fontFamily="sans-serif-medium"
         android:text="TextView"
         android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.489"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/artist_pfp"
+        app:layout_constraintTop_toBottomOf="@+id/top_track_pfp"
+        app:layout_constraintVertical_bias="0.061"
         tools:text="Song Name" />
-
-    <TextView
-        android:id="@+id/total_minutes"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="164dp"
-        android:layout_marginTop="66dp"
-        android:text="TextView"
-        android:textSize="20sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/song_name" />
-
-    <TextView
-        android:id="@+id/peak_listening_month"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="164dp"
-        android:layout_marginTop="75dp"
-        android:text="TextView"
-        android:textSize="20sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/total_minutes" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
