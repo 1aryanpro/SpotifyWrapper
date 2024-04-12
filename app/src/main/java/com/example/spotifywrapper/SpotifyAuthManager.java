@@ -96,6 +96,35 @@ public class SpotifyAuthManager {
         AuthorizationClient.openLoginActivity(activity, 0, request);
     }
 
+    public void checkToken(Consumer<Response> onSuccess) {
+        final Request request = new Request.Builder()
+                .url("https://api.spotify.com/v1/me/")
+                .addHeader("Authorization", "Bearer " + userToken)
+                .build();
+
+        Call call = new OkHttpClient().newCall(request);
+
+        call.enqueue(new okhttp3.Callback() {
+            @Override
+            public void onFailure(@NonNull Call call, @NonNull IOException e) {
+                Log.e("checkToken", "Failed to make the request", e);
+                userToken = null;
+                requestUserToken();
+            }
+
+            @Override
+            public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
+                if (!response.isSuccessful()) {
+                    Log.e("HTTP", "Failed to fetch data: " + response.code() + " - " + response.message());
+                    userToken = null;
+                    return;
+                }
+
+                onSuccess.accept(response);
+            }
+        });
+    }
+
     public void callAPI(String endpoint, Consumer<JSONObject> onSuccess) {
         if (userToken == null) {
             return;
