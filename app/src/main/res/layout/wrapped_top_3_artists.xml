@@ -24,11 +24,22 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
+        android:id="@+id/artist_three"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginStart="28dp"
+        android:layout_marginTop="320dp"
+        android:src="@drawable/placeholder_avatar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView"
+        tools:srcCompat="@tools:sample/avatars" />
+
+    <ImageView
         android:id="@+id/artist_one"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="75dp"
+        android:layout_marginStart="28dp"
+        android:layout_marginTop="28dp"
         android:src="@drawable/placeholder_avatar"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView"
@@ -38,19 +49,8 @@
         android:id="@+id/artist_two"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="220dp"
-        android:src="@drawable/placeholder_avatar"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView"
-        tools:srcCompat="@tools:sample/avatars" />
-
-    <ImageView
-        android:id="@+id/artist_three"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="365dp"
+        android:layout_marginStart="28dp"
+        android:layout_marginTop="176dp"
         android:src="@drawable/placeholder_avatar"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView"
@@ -61,7 +61,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="40dp"
-        android:layout_marginTop="115dp"
+        android:layout_marginTop="64dp"
         android:fontFamily="sans-serif-black"
         android:text="TextView"
         android:textSize="20sp"
@@ -70,29 +70,29 @@
         app:layout_constraintTop_toBottomOf="@+id/textView" />
 
     <TextView
-        android:id="@+id/artist_name_two"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="40dp"
-        android:layout_marginTop="115dp"
-        android:fontFamily="sans-serif-black"
-        android:text="TextView"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toEndOf="@+id/artist_two"
-        app:layout_constraintTop_toBottomOf="@+id/artist_name_one" />
-
-    <TextView
         android:id="@+id/artist_name_three"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="40dp"
-        android:layout_marginTop="120dp"
+        android:layout_marginTop="124dp"
         android:fontFamily="sans-serif-black"
         android:text="TextView"
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@+id/artist_three"
         app:layout_constraintTop_toBottomOf="@+id/artist_name_two" />
+
+    <TextView
+        android:id="@+id/artist_name_two"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="116dp"
+        android:fontFamily="sans-serif-black"
+        android:text="TextView"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@+id/artist_two"
+        app:layout_constraintTop_toBottomOf="@+id/artist_name_one" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

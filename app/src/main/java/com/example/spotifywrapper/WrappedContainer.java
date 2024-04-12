@@ -1,60 +1,53 @@
 package com.example.spotifywrapper;
 
-//import android.os.AsyncTask;
-
 import android.app.Activity;
 import android.content.Context;
-import android.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 
-public class APIRequests {
+public class WrappedContainer {
 
-    public List<ArtistContainer> topArtists = new ArrayList<>(); //add ArtistContainer objects (Name, Image URL)
-    public List<TrackContainer> topTracks = new ArrayList<>(); //add TrackContainer objects (Name, Album, Artist)
-    public List<AlbumContainer> topAlbumsFromTracks = new ArrayList<>();
-    public List<GenreContainer> topOrderedGenres = new ArrayList<>();
-    public List<String> artistsEndpointForGenre = new ArrayList<>(); //used to retrieve info of artist to ID Top Genres
-    public List<String> listOfGenres = new ArrayList<>();
+    public List<ArtistContainer> topArtists = new ArrayList<>();
+    public List<TrackContainer> topTracks = new ArrayList<>();
+    private List<AlbumContainer> topAlbumsFromTracks = new ArrayList<>();
+    public GenreContainer topGenre;
+    private List<String> artistsEndpointForGenre = new ArrayList<>();
+    private List<String> listOfGenres = new ArrayList<>();
     private final SpotifyAuthManager sm;
-    public String userEmail;
+    private FirebaseManager fire;
+    private String wrappedPath;
 
-    APIRequests(Context appContext, Activity activity) {
+    WrappedContainer(Context appContext, Activity activity) {
         sm = new SpotifyAuthManager(appContext, activity);
-
-        getUserEmail();
-        topArtistsResponse();
-        topTracksAndAlbumsResponse();
-        topGenresResponse();
-
+        fire = new FirebaseManager();
     }
 
-    public void getUserEmail() {
-        Log.d("API REQUESTS", "here");
-        sm.callAPI("/v1/me/", data -> {
-            try {
-                userEmail = data.getString("email");
-                Log.d("called V1/ME", userEmail);
-            } catch (Exception e) {
-                Log.e("called V1/ME", "call error");
-                throw new RuntimeException(e);
-            }
-        });
+    public void createFromScratch() {
+        wrappedPath = sm.userEmail + "/wraps/" + Instant.now().getEpochSecond();
+
+        topTracksAndAlbumsResponse();
+        topArtistsResponse();
+        topGenresResponse();
+    }
+
+    public void createFromExisting(String userID, int wrappedID) {
+
     }
 
     public void topArtistsResponse() {
         sm.callAPI("/v1/me/top/artists", data -> {
             try {
                 JSONArray items = data.getJSONArray("items");
-                for (int i = 0; i < 3; i++) { //get ONLY top 3 artists
+                for (int i = 0; i < 3; i++) {
                     JSONObject artist = items.getJSONObject(i);
                     String artistName = artist.getString("name");
                     JSONArray imagesArray = artist.getJSONArray("images");
@@ -65,6 +58,8 @@ public class APIRequests {
                     }
                     topArtists.add(new ArtistContainer(artistName, artistImageURL));
                 }
+                fire.setRef(wrappedPath, this);
+
             } catch (JSONException e) {
                 throw new RuntimeException(e);
             }
@@ -102,8 +97,9 @@ public class APIRequests {
 
                         artistsEndpointForGenre.add(artistID); //used as PART of endpoint
                     }
-                    topTracks.add(new TrackContainer(trackName, albumName, artistOfTrack));
+                    topTracks.add(new TrackContainer(trackName, albumName, imageAlbumURL, artistOfTrack));
                     topAlbumsFromTracks.add(new AlbumContainer(albumName, imageAlbumURL));
+                    fire.setRef(wrappedPath, this);
                 }
             } catch (JSONException e) {
                 throw new RuntimeException(e);
@@ -116,49 +112,32 @@ public class APIRequests {
             sm.callAPI("/v1/artists/" + artistsEndpointForGenre.get(i), data -> {
                 try {
                     JSONArray genresList = data.getJSONArray("genres");
+                    Map<String, Integer> countMap = new HashMap<>();
+
+                    Integer max = 0;
+                    String toAdd = "";
+
                     for (int genreIndex = 0; genreIndex < genresList.length(); genreIndex++) {
                         String genre = (String) genresList.get(genreIndex);
-                        listOfGenres.add(genre);
+                        if (!countMap.containsKey(genre)) {
+                            countMap.put(genre, 1);
+                        } else {
+                            Integer oldCount = countMap.get(genre);
+                            if (oldCount != null) countMap.replace(genre, oldCount, oldCount + 1);
+                        }
+                        if (countMap.get(genre) > max) {
+                            max = countMap.get(genre);
+                            toAdd = genre;
+                        }
                     }
+
+                    topGenre = new GenreContainer(toAdd);
+
+                    fire.setRef(wrappedPath, this);
                 } catch (JSONException e) {
                     throw new RuntimeException(e);
                 }
             });
-
-        }
-        genreRanking(listOfGenres);
-    }
-
-    private void genreRanking(List<String> genresList) {
-        //creates a mapping of <Genre, NumberOfOccurrencesOfGenre>
-        Map<String, Integer> countMap = new HashMap<>();
-        for (String genre : genresList) {
-            if (!countMap.containsKey(genre)) {
-                countMap.put(genre, 1);
-            } else {
-                Integer oldCount = countMap.get(genre);
-                if (oldCount != null) countMap.replace(genre, oldCount, oldCount + 1);
-            }
-        }
-        Integer max = 0;
-        String toAdd = "";
-        int traversal = 0;
-        //finds the Top5Genres of user
-        while (traversal < 5) {
-            for (Map.Entry<String, Integer> entry : countMap.entrySet()) {
-                if (entry.getValue().compareTo(max) > 0) {
-                    max = entry.getValue();
-                    toAdd = entry.getKey();
-                }
-            }
-            traversal++;
-            topOrderedGenres.add(new GenreContainer(toAdd));
-            countMap.replace(toAdd, null);
-            countMap.remove(toAdd);
-        }
-        if (!countMap.isEmpty()) {
-            countMap.replaceAll((k, v) -> null);
-            countMap.clear();
         }
     }
 }

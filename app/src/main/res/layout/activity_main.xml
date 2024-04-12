@@ -8,18 +8,18 @@
     android:id="@+id/activity_main"
     tools:context=".MainActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Main Activity"
-        android:textSize="25dp"
-        android:layout_marginBottom="200dp"/>
-
     <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Launch Wrapped"
+            android:text="Create Wrapped"
             android:textSize="25dp"
-            android:id="@+id/launch_wrapped" />
+            android:id="@+id/create_wrapped" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Launch Wrapped"
+        android:textSize="25dp"
+        android:id="@+id/launch_wrapped" />
 
 </LinearLayout>
