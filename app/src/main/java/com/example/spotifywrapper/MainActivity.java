@@ -41,9 +41,10 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
         if (id == R.id.launch_firebaseDebug) {
             act = FirebaseDebugActivity.class;
+        } else if (id == R.id.launch_updateAccount) {
+            act = UpdateAccountActivity.class;
         }
         startActivity(new Intent(this, act));
-        finish();
         return true;
     }
 }
