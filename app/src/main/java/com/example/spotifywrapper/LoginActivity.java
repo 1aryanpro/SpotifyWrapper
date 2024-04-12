@@ -25,8 +25,7 @@ public class LoginActivity extends AppCompatActivity {
 
         sm = new SpotifyAuthManager(getApplicationContext(), this);
 
-        userToken = sm.getUserToken();
-        if (userToken != null) finishLogIn();
+        if (sm.getUserToken() != null) checkTokenWorking();
     }
 
     private void logIn() {
@@ -44,6 +43,13 @@ public class LoginActivity extends AppCompatActivity {
         sm.setUserToken(userToken);
 
         finishLogIn();
+    }
+
+    private void checkTokenWorking() {
+        sm.checkToken(response -> {
+            userToken = sm.getUserToken();
+            finishLogIn();
+        });
     }
 
     private void finishLogIn() {
