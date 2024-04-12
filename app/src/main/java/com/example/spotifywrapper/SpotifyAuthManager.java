@@ -27,10 +27,12 @@ public class SpotifyAuthManager {
     private static final String CLIENT_ID = BuildConfig.SPOTIFY_CLIENT_ID;
     private static final String REDIRECT_URI = Uri.parse("spotifywrapper://auth").toString();
     public static final String USER_TOKEN_KEY = "spotify-client-token";
+    public static final String USER_EMAIL_KEY = "spotify-user-email";
     private final Activity activity;
     private String userToken = null;
     private final SharedPreferences pref;
     private final SharedPreferences.Editor editor;
+    public String userEmail;
 
     SpotifyAuthManager(Context context, Activity conActivity) {
         activity = conActivity;
@@ -38,6 +40,7 @@ public class SpotifyAuthManager {
         editor = pref.edit();
 
         getStoredUserToken();
+        getStoredUserEmail();
     }
 
     public String getUserToken() {
@@ -50,10 +53,32 @@ public class SpotifyAuthManager {
         return userToken;
     }
 
+    public String getStoredUserEmail() {
+        userEmail = pref.getString(USER_EMAIL_KEY, null);
+        if (userEmail != null) new FirebaseManager().createUser(userEmail);
+        return userEmail;
+    }
+
+    public void setUserEmail(String em) {
+        userEmail = em.replace("@", "-").replace(".", "-");
+        editor.putString(USER_EMAIL_KEY, userEmail);
+        editor.apply();
+
+        new FirebaseManager().createUser(userEmail);
+    }
+
     public void setUserToken(String t) {
         userToken = t;
         editor.putString(USER_TOKEN_KEY, userToken);
         editor.apply();
+
+        callAPI("/v1/me/", data -> {
+            try {
+                setUserEmail(data.getString("email"));
+            } catch (JSONException e) {
+                throw new RuntimeException(e);
+            }
+        });
     }
 
     public void clearUserToken() {
