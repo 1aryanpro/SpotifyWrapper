@@ -11,10 +11,10 @@ jobs:
     steps:
       - name: Check Pull Request Name Format
         run: |
-          if ! [[ "${PR_TITLE}" =~ (^(feature|bugfix|refactor|style): ) ]]; then
+          if ! [[ "${PR_TITLE}" =~ (^(feature|fix|refactor|style): ) ]]; then
             echo "Pull Request title does not match the required format."
             echo "Please follow the format: [prefix]: Name of Change"
-            echo "Allowed prefixes: feature, bugfix, refactor, style"
+            echo "Allowed prefixes: feature, fix, refactor, style"
             exit 1
           fi
         env:
