@@ -39,8 +39,14 @@ public class WrappedContainer {
         topGenresResponse();
     }
 
-    public void createFromExisting(String userID, int wrappedID) {
+    public void createFromExisting(String userID, long wrappedID) {
+        fire.getArtists(userID, wrappedID, ac -> {
+            this.topArtists = ac;
+        });
 
+        fire.getTracks(userID, wrappedID, tc -> {
+            this.topTracks = tc;
+        });
     }
 
     public void topArtistsResponse() {
