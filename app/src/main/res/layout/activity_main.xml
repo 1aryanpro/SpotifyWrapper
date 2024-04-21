@@ -5,7 +5,7 @@
     android:id="@+id/activity_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/home_background"
+    android:background="#353C36"
     android:backgroundTint="#353C36"
     android:gravity="center"
     android:orientation="vertical"
@@ -20,33 +20,19 @@
         android:textColor="#99C89A"
         android:textSize="56sp"
         android:translationX="-100dp"
-        android:translationY="-200dp"
+        android:translationY="-160dp"
         tools:text="Hello, " />
 
     <TextView
         android:id="@+id/home_username"
-        android:layout_width="wrap_content"
+        android:layout_width="318dp"
         android:layout_height="wrap_content"
         android:text="USERNAME"
-        android:textAlignment="center"
+        android:textAlignment="viewStart"
         android:textColor="#99C89A"
         android:textSize="56sp"
-        android:translationX="-35dp"
-        android:translationY="-200dp" />
-
-    <ImageView
-        android:id="@+id/music_note"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:clipToOutline="false"
-        android:contentDescription="note"
-        android:outlineAmbientShadowColor="#000000"
-        android:outlineProvider="bounds"
-        android:scaleX="2"
-        android:scaleY="2"
-        android:src="@drawable/icon_login_music_note"
-        android:translationY="-50dp"
-        android:translationZ="100dp" />
+        android:translationX="-15dp"
+        android:translationY="-170dp" />
 
     <Button
         android:id="@+id/launch_wrapped"
@@ -75,7 +61,7 @@
         android:rotation="10"
         android:scaleX="10"
         android:scaleY="10"
-        android:translationY="-220dp"
+        android:translationY="-185dp"
         app:srcCompat="@drawable/icon_wrapped" />
 
 
