@@ -3,8 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#1C7A20"
-    android:backgroundTint="#1C7A20"
+    android:background="#1DBC37"
+    android:backgroundTint="#36973A"
     tools:context=".LoginActivity">
 
     <ImageView
@@ -33,34 +33,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:backgroundTint="#99C89A"
+        android:backgroundTint="#90C192"
         android:scaleX="2"
         android:scaleY="2"
-        android:text="Log in with Spotify"
-        android:translationY="100dp" />
-
-    <TextView
-        android:id="@+id/home_hello"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/welcome"
-        android:textAlignment="center"
-        android:textColor="#99C89A"
-        android:textSize="56sp"
-        tools:text="Welcome" />
-
-    <TextView
-        android:id="@+id/guide_text"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textAlignment="center"
-        android:textColor="#ABC6AC"
-        android:textSize="34sp"
-        android:textStyle="bold"
-        android:translationY="280dp"
-        android:translationZ="180dp"
-        android:visibility="visible"
-        tools:text="To View Your Spotify Wrapper" />
+        android:text="Log in with Spotify" />
 
     <TextView
         android:id="@+id/login_welcome"
