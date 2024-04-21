@@ -22,9 +22,10 @@ public class WrappedActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        wrappedContainer = new WrappedContainer(getApplicationContext(), this);
-        wrappedContainer.createFromScratch();
         fire = new FirebaseManager();
+
+        wrappedContainer = new WrappedContainer(getApplicationContext(), this);
+        loadWrappedData();
 
         currPage = -1;
         pages = new int[]{
@@ -37,6 +38,21 @@ public class WrappedActivity extends AppCompatActivity {
         };
 
         nextPage();
+    }
+
+    public void loadWrappedData() {
+        Intent intent = getIntent();
+        int createNew = intent.getIntExtra("createNew", 0);
+
+        if (createNew == 1) {
+            wrappedContainer.createFromScratch();
+            return;
+        }
+
+        String userID = intent.getStringExtra("userID");
+        long wrappedID = intent.getLongExtra("wrappedID", 0);
+
+        wrappedContainer.createFromExisting(userID, wrappedID);
     }
 
     @Override

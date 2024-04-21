@@ -1,13 +1,13 @@
 package com.example.spotifywrapper;
 
 import android.util.Log;
-import android.util.Pair;
 
-import com.google.android.gms.tasks.Task;
+import androidx.annotation.NonNull;
+
 import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.GenericTypeIndicator;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,18 +27,57 @@ public class FirebaseManager {
         db.getReference(ref).setValue(val);
     }
 
-    public void getWrappedIDs(Consumer<List<Pair<String,String>>> onSuccess) {
-        db.getReference().get().addOnCompleteListener(curr -> {
-            List<Pair<String, String>> wrappedIDs = new ArrayList<>();
-            for (DataSnapshot snap: curr.getResult().getChildren()) {
-                String userID = snap.getKey();
+    public void getWrappedIDs(boolean everyone, String currUser, Consumer<List<WrappedDataContainer>> onSuccess) {
+        db.getReference().addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                List<WrappedDataContainer> list = new ArrayList<>();
+                for (DataSnapshot snap: dataSnapshot.getChildren()) {
+                    String userID = snap.getKey();
+                    if (!everyone && !currUser.equals(userID)) continue;
 
-                for(DataSnapshot wrap : snap.child("wraps").getChildren()) {
-                    wrappedIDs.add(new Pair<>(userID, wrap.getKey()));
+                    String username = (String) snap.child("username").getValue();
+
+                    for(DataSnapshot wrap : snap.child("wraps").getChildren()) {
+                        list.add(new WrappedDataContainer(userID, username, Integer.parseInt(wrap.getKey())));
+                    }
+
                 }
-
+                onSuccess.accept(list);
             }
-            onSuccess.accept(wrappedIDs);
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.e("DatabaseError", error.getCode() + " - " + error.getMessage());
+            }
+        });
+    }
+
+    public void getArtists(String userID, long wrappedID, Consumer<List<ArtistContainer>> onSuccess) {
+        String path = userID + "/wraps/" + wrappedID + "/topArtists";
+        db.getReference(path).get().addOnCompleteListener(dataSnapshot -> {
+            List<ArtistContainer> list = new ArrayList<>();
+            for (DataSnapshot snap: dataSnapshot.getResult().getChildren()) {
+                String name = (String) snap.child("artistName").getValue();
+                String image = (String) snap.child("artistImageURL").getValue();
+                list.add(new ArtistContainer(name, image));
+            }
+            onSuccess.accept(list);
+        });
+    }
+
+    public void getTracks(String userID, long wrappedID, Consumer<List<TrackContainer>> onSuccess) {
+        String path = userID + "/wraps/" + wrappedID + "/topTracks";
+        db.getReference(path).get().addOnCompleteListener(dataSnapshot -> {
+            List<TrackContainer> list = new ArrayList<>();
+            for (DataSnapshot snap: dataSnapshot.getResult().getChildren()) {
+                String name = (String) snap.child("trackName").getValue();
+                String albumName = (String) snap.child("albumName").getValue();
+                String albumURL = (String) snap.child("albumURL").getValue();
+                List<String> artists = (List<String>) snap.child("artists").getValue();
+                list.add(new TrackContainer(name, albumName, albumURL, artists));
+            }
+            onSuccess.accept(list);
         });
     }
 

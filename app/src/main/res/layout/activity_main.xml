@@ -1,68 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/activity_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#353C36"
-    android:backgroundTint="#353C36"
-    android:gravity="center"
     android:orientation="vertical"
+    android:gravity="center"
+    android:id="@+id/activity_main"
     tools:context=".MainActivity">
 
-    <TextView
-        android:id="@+id/home_hello"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello, "
-        android:textAlignment="center"
-        android:textColor="#99C89A"
-        android:textSize="56sp"
-        android:translationX="-100dp"
-        android:translationY="-160dp"
-        tools:text="Hello, " />
-
-    <TextView
-        android:id="@+id/home_username"
-        android:layout_width="318dp"
-        android:layout_height="wrap_content"
-        android:text="USERNAME"
-        android:textAlignment="viewStart"
-        android:textColor="#99C89A"
-        android:textSize="56sp"
-        android:translationX="-15dp"
-        android:translationY="-170dp" />
+    <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Create Wrapped"
+            android:textSize="25dp"
+            android:id="@+id/create_wrapped" />
 
     <Button
-        android:id="@+id/launch_wrapped"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:backgroundTint="#99C89A"
         android:text="Launch Wrapped"
-        android:textColor="#DDDDDD"
         android:textSize="25dp"
-        android:translationY="50dp" />
-
-    <Button
-        android:id="@+id/create_wrapped"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:backgroundTint="#99C89A"
-        android:text="Create  Wrapped"
-        android:textColor="#DFDFDF"
-        android:textSize="25dp"
-        android:translationY="100dp" />
-
-    <ImageView
-        android:id="@+id/wrapped_icon"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:rotation="10"
-        android:scaleX="10"
-        android:scaleY="10"
-        android:translationY="-185dp"
-        app:srcCompat="@drawable/icon_wrapped" />
-
+        android:id="@+id/launch_wrapped" />
 
 </LinearLayout>
