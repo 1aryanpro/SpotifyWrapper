@@ -1,25 +1,82 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
+    android:background="@drawable/home_background"
+    android:backgroundTint="#353C36"
     android:gravity="center"
-    android:id="@+id/activity_main"
+    android:orientation="vertical"
     tools:context=".MainActivity">
 
-    <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Create Wrapped"
-            android:textSize="25dp"
-            android:id="@+id/create_wrapped" />
-
-    <Button
+    <TextView
+        android:id="@+id/home_hello"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="Hello, "
+        android:textAlignment="center"
+        android:textColor="#99C89A"
+        android:textSize="56sp"
+        android:translationX="-100dp"
+        android:translationY="-200dp"
+        tools:text="Hello, " />
+
+    <TextView
+        android:id="@+id/home_username"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="USERNAME"
+        android:textAlignment="center"
+        android:textColor="#99C89A"
+        android:textSize="56sp"
+        android:translationX="-35dp"
+        android:translationY="-200dp" />
+
+    <ImageView
+        android:id="@+id/music_note"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:clipToOutline="false"
+        android:contentDescription="note"
+        android:outlineAmbientShadowColor="#000000"
+        android:outlineProvider="bounds"
+        android:scaleX="2"
+        android:scaleY="2"
+        android:src="@drawable/icon_login_music_note"
+        android:translationY="-50dp"
+        android:translationZ="100dp" />
+
+    <Button
+        android:id="@+id/launch_wrapped"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="#99C89A"
         android:text="Launch Wrapped"
+        android:textColor="#DDDDDD"
         android:textSize="25dp"
-        android:id="@+id/launch_wrapped" />
+        android:translationY="50dp" />
+
+    <Button
+        android:id="@+id/create_wrapped"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="#99C89A"
+        android:text="Create  Wrapped"
+        android:textColor="#DFDFDF"
+        android:textSize="25dp"
+        android:translationY="100dp" />
+
+    <ImageView
+        android:id="@+id/wrapped_icon"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:rotation="10"
+        android:scaleX="10"
+        android:scaleY="10"
+        android:translationY="-220dp"
+        app:srcCompat="@drawable/icon_wrapped" />
+
 
 </LinearLayout>
