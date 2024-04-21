@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
-import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -15,9 +14,6 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
     int[] pages;
     int currentPage = -1;
-    FirebaseManager fire;
-    TextView usernameView;
-    SpotifyAuthManager sm;
 
     List<String> wrappedIDs;
     RecyclerView recyclerView;
@@ -29,13 +25,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        sm = new SpotifyAuthManager(getApplicationContext(), this);
-        usernameView = findViewById(R.id.home_username);
-        fire = new FirebaseManager();
-        fire.getUsername(sm.userEmail, username -> {
-            usernameView.setText(username);
-        });
 
         Button launchButton = findViewById(R.id.launch_wrapped);
         Button createButton = findViewById(R.id.create_wrapped);
