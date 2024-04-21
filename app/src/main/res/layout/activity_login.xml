@@ -10,6 +10,9 @@
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="160dp"
+        android:contentDescription="note"
+        android:outlineAmbientShadowColor="#000000"
+        android:outlineProvider="bounds"
         android:rotation="15"
         android:src="@drawable/icon_login_music_note"
         android:translationY="100dp" />
@@ -17,6 +20,9 @@
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="160dp"
+        android:contentDescription="box"
+        android:outlineAmbientShadowColor="#000000"
+        android:outlineProvider="bounds"
         android:scaleX="1.4"
         android:scaleY="1.4"
         android:src="@drawable/login_outline_box"
@@ -54,6 +60,30 @@
         android:translationY="280dp"
         android:translationZ="180dp"
         android:visibility="visible"
+        tools:text="To View Your Spotify Wrapper" />
+
+    <TextView
+        android:id="@+id/login_welcome"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Welcome"
+        android:textAlignment="center"
+        android:textColor="#99C89A"
+        android:textSize="56sp"
+        tools:text="Welcome" />
+
+    <TextView
+        android:id="@+id/guide_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:backgroundTint="#000000"
+        android:clipToOutline="true"
+        android:outlineSpotShadowColor="#000000"
+        android:textAlignment="center"
+        android:textColor="#ABC6AC"
+        android:textSize="34sp"
+        android:textStyle="bold"
+        android:translationY="280dp"
         tools:text="To View Your Spotify Wrapper" />
 
 </RelativeLayout>

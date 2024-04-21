@@ -64,5 +64,4 @@
         android:translationY="-185dp"
         app:srcCompat="@drawable/icon_wrapped" />
 
-
-</LinearLayout>
+</RelativeLayout>
