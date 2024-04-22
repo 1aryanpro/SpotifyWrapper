@@ -3,8 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#1C7A20"
-    android:backgroundTint="#1C7A20"
     tools:context=".LoginActivity">
 
     <ImageView
@@ -23,9 +21,9 @@
         android:translationY="100dp" />
 
     <Button
-        android:id="@+id/login_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:id="@+id/login_btn"
         android:layout_centerInParent="true"
         android:backgroundTint="#99C89A"
         android:scaleX="2"
