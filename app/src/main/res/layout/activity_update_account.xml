@@ -3,8 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
+    android:background="#284329"
+    android:backgroundTint="#284329"
     android:gravity="center"
+    android:orientation="vertical"
     tools:context=".UpdateAccountActivity">
 
     <TextView
@@ -13,37 +15,49 @@
         android:text="Hello,"
         android:textAlignment="center"
         android:textSize="30dp" />
+
     <TextView
+        android:id="@+id/username_textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="USERNAME"
         android:textAlignment="center"
-        android:id="@+id/username_textView"
         android:textSize="40dp" />
 
 
     <Button
+        android:id="@+id/change_username"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:backgroundTint="#7EC181"
         android:text="Change Username"
-        android:textSize="25dp"
-        android:id="@+id/change_username" />
+        android:textSize="25dp" />
 
     <Button
+        android:id="@+id/logout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Delete Account"
-        android:textSize="25dp"
-        android:textColor="#FF0000"
+        android:backgroundTint="#7EC181"
+        android:text="Logout"
+        android:textSize="25dp" />
+
+    <Button
+        android:id="@+id/delete_account"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginTop="50dp"
-        android:id="@+id/delete_account" />
+        android:backgroundTint="#7EC181"
+        android:text="Delete Account"
+        android:textColor="#FF0000"
+        android:textSize="25dp" />
 
     <Button
+        android:id="@+id/back_home"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Back to home"
-        android:textSize="25dp"
         android:layout_marginTop="150dp"
-        android:id="@+id/back_home" />
+        android:backgroundTint="#7EC181"
+        android:text="Back to home"
+        android:textSize="25dp" />
 
 </LinearLayout>

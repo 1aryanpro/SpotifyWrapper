@@ -31,10 +31,10 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         sm = new SpotifyAuthManager(getApplicationContext(), this);
-        usernameView = findViewById(R.id.home_username);
+        //usernameView = findViewById(R.id.home_username);
         fire = new FirebaseManager();
         fire.getUsername(sm.userEmail, username -> {
-            usernameView.setText(username);
+        //    usernameView.setText(username);
         });
 
         Button launchButton = findViewById(R.id.launch_wrapped);

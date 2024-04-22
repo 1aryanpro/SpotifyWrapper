@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">SpotifyWrapper</string>
     <string name="welcome">Welcome</string>
+    <string name="your_wrapped">Your Wrapped!</string>
 </resources>

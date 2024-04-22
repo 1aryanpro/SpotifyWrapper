@@ -40,8 +40,7 @@
         android:text="@string/welcome"
         android:textAlignment="center"
         android:textColor="#99C89A"
-        android:textSize="56sp"
-        tools:text="Welcome" />
+        android:textSize="56sp" />
 
     <TextView
         android:id="@+id/guide_text"
@@ -54,6 +53,6 @@
         android:translationY="280dp"
         android:translationZ="180dp"
         android:visibility="visible"
-        tools:text="To View Your Spotify Wrapper" />
+        android:text="To View Your Spotify Wrapper"/>
 
 </RelativeLayout>

@@ -19,6 +19,7 @@ public class UpdateAccountActivity extends AppCompatActivity {
     TextView usernameView;
     FirebaseManager fire;
     SpotifyAuthManager sm;
+    TextView tokenTextView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,6 +33,9 @@ public class UpdateAccountActivity extends AppCompatActivity {
             usernameView.setText(username);
         });
 
+        Button logoutButton = findViewById(R.id.logout);
+        logoutButton.setOnClickListener((v) -> logoutToken());
+
         Button changeUsernameBTN = findViewById(R.id.change_username);
         changeUsernameBTN.setOnClickListener((v) -> editUsername());
 
@@ -41,7 +45,11 @@ public class UpdateAccountActivity extends AppCompatActivity {
         Button deleteUserBTN = findViewById(R.id.delete_account);
         deleteUserBTN.setOnClickListener((v) -> deleteUser());
     }
-
+    private void logoutToken() {
+        sm.clearUserToken();
+        Intent intent = new Intent(this, LoginActivity.class);
+        startActivity(intent);
+    }
     private void deleteUser() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Are you sure?");
