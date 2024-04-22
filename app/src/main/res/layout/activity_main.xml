@@ -3,33 +3,54 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#64A366"
+    android:backgroundTint="#284329"
+    android:gravity="center"
     android:orientation="vertical"
     android:gravity="center"
     android:id="@+id/activity_main"
     tools:context=".MainActivity">
 
+    <TextView
+        android:id="@+id/home_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/your_wrapped"
+        android:textAlignment="center"
+        android:textColor="#91C693"
+        android:textSize="34sp" />
+
+    <ImageView
+        android:id="@+id/wrap_icon"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:src="@drawable/icon_wrapped"
+        android:translationY="30dp" />
+
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/wrapped_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="10dp"
-        android:id="@+id/wrapped_list"/>
-
-    <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Create Wrapped"
-            android:textSize="25dp"
-            android:layout_centerHorizontal="true"
-            android:layout_above="@id/launch_wrapped"
-            android:id="@+id/create_wrapped" />
+        android:translationY="125dp" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="PUBLIC"
-        android:textSize="25dp"
+        android:layout_above="@id/launch_wrapped"
         android:layout_centerHorizontal="true"
+        android:backgroundTint="#91C693"
+        android:text="Create Wrapped"
+        android:textSize="25dp" />
+
+    <Button
         android:id="@+id/launch_wrapped"
-        android:layout_alignParentBottom="true"/>
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:backgroundTint="#91C693"
+        android:text="PUBLIC"
+        android:textSize="25dp" />
 
 </RelativeLayout>

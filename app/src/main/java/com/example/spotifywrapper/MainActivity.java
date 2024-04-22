@@ -25,7 +25,10 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+      
+        sm = new SpotifyAuthManager(getApplicationContext(), this);
+        fire = new FirebaseManager();
+      
         Button launchButton = findViewById(R.id.launch_wrapped);
         Button createButton = findViewById(R.id.create_wrapped);
         launchButton.setOnClickListener((v) -> launchWrapped());
