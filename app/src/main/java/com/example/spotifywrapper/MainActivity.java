@@ -9,6 +9,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -18,6 +21,8 @@ public class MainActivity extends AppCompatActivity {
     List<String> wrappedIDs;
     RecyclerView recyclerView;
     WrappedAdapter adapter;
+    SpotifyAuthManager sm;
+    FirebaseManager fire;
 
     boolean everyone = true;
 
@@ -29,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
         sm = new SpotifyAuthManager(getApplicationContext(), this);
         fire = new FirebaseManager();
       
-        Button launchButton = findViewById(R.id.launch_wrapped);
+        Button launchButton = findViewById(R.id.public_filter);
         Button createButton = findViewById(R.id.create_wrapped);
         launchButton.setOnClickListener((v) -> launchWrapped());
         createButton.setOnClickListener((v) -> createWrapped());
@@ -51,6 +56,7 @@ public class MainActivity extends AppCompatActivity {
         FirebaseManager fire = new FirebaseManager();
         SpotifyAuthManager sm = new SpotifyAuthManager(getApplicationContext(), this);
         fire.getWrappedIDs(everyone, sm.userEmail, data -> {
+            Collections.sort(data, Comparator.comparing((a) -> -a.epoch));
             recyclerView.setLayoutManager(new LinearLayoutManager(this));
             adapter = new WrappedAdapter(data, getApplication(), listener);
             recyclerView.setAdapter(adapter);
@@ -65,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void launchWrapped() {
         everyone = !everyone;
-        Button everyoneBTN = findViewById(R.id.launch_wrapped);
+        Button everyoneBTN = findViewById(R.id.public_filter);
         everyoneBTN.setText(everyone ? "PUBLIC" : "PRIVATE");
         getData();
     }

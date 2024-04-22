@@ -7,7 +7,6 @@
     android:backgroundTint="#284329"
     android:gravity="center"
     android:orientation="vertical"
-    android:gravity="center"
     android:id="@+id/activity_main"
     tools:context=".MainActivity">
 
@@ -37,14 +36,15 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@id/launch_wrapped"
+        android:layout_above="@id/public_filter"
+        android:id="@+id/create_wrapped"
         android:layout_centerHorizontal="true"
         android:backgroundTint="#91C693"
         android:text="Create Wrapped"
         android:textSize="25dp" />
 
     <Button
-        android:id="@+id/launch_wrapped"
+        android:id="@+id/public_filter"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"

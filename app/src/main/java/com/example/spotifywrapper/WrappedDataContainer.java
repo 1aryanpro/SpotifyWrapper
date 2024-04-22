@@ -2,6 +2,7 @@ package com.example.spotifywrapper;
 
 import java.time.Instant;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 
@@ -16,8 +17,8 @@ public class WrappedDataContainer {
         this.user = user + "'s Wrapped";
         this.epoch = epoch;
 
-        LocalDate localDate = Instant.ofEpochSecond(epoch).atZone(ZoneOffset.UTC).toLocalDate();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMM dd, yyyy");
+        LocalDateTime localDate = Instant.ofEpochSecond(epoch).atZone(ZoneOffset.UTC).toLocalDateTime();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMM dd, yyyy - h:mm a");
 
         this.date = localDate.format(formatter);
     }
